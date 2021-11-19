@@ -1,7 +1,5 @@
 #전역
 
-# id_list=[]  #회원가입하면 저장될 아이디 리스트
-# pw_list=[]  #회원가입하면 저장될 비번 리스트
 
 user_list = [
     {
@@ -59,7 +57,41 @@ def insert_id_pw():
     print('\n회원가입이 완료되었습니다.')
 
 # 기존 직원 로그인
+# 아이디를 입력받는
+def input_id():
+    return input('아이디 >> ') 
+# 비번을 입력받는
+def input_pw():
+    return input('비밀번호 >> ') 
 
+
+
+#아이디로 정보를 찾아오는
+def find_login(id):
+    for already_user in user_list:
+        if id == already_user['id']:
+            return already_user
+    return {}
+    
+def login():
+    find_id = input_id()
+    already_user = find_login(find_id)
+
+    if len(already_user) > 0:
+        in_pw = input_pw() # 방금 입력한 비번
+        real_pw = already_user['pw']
+            
+        while True:
+            if in_pw == real_pw:
+                print('{}님, 로그인에 성공하셨습니다.'.format(already_user['id']))
+                return True
+            else :
+                print('비밀번호가 틀렸습니다.')
+            # 도서목록
+            #pass
+    else:
+        ('가입되지 않은 정보입니다.')
+    
 
 
 #프로그램 종료처리하기
@@ -85,12 +117,20 @@ if __name__ == '__main__':
         show_first()
         
         menu = int(input('\n >>> '))
+        
         if menu == 1:
             insert_id_pw()
         elif menu == 2:
-            pass
-        else:
+            is_login = login()
+
+            if is_login:
+                # is_login이 True => 도서 등록 메뉴로 전환
+                pass
+        # 리스트에 정보 없을때 회원가입 시키는거
+        elif menu == 3:
             exit_program()
+        
+            
 
     
 
