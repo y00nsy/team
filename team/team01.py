@@ -100,8 +100,8 @@ def find_login(find_id):
             return already_user
     return {}
 
-#비밀번호로 정보를 찾아오는
 '''
+#비밀번호로 정보를 찾아오는
 def find_login(find_pw):
     for already_user in user_list:
         if find_pw == already_user['pw']:
@@ -306,6 +306,10 @@ if __name__ == '__main__':
                         delete_book()
                     elif book_info == 6:
                         exit_program()
+                    else:
+                        print('!! 메뉴를 잘못 입력했습니다. !!')
+
+                    input('\n>> 메뉴화면으로 돌아가시려면 Enter를 누르세요.')
 
         # 리스트에 정보 없을때 회원가입 시키는거
         elif menu == 3:
