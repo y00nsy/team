@@ -1,4 +1,15 @@
-#전역
+
+# 세이브파일 관련 모듈
+import sys
+import os
+import pickle
+
+
+#===== 전역정의부 =====#
+dir_name = 'D:/isec_ysyy/team/book_store/'
+file_name1 = 'user_list.sav'
+file_name2 = 'book_store.sav'
+
 
 
 user_list = [
@@ -41,7 +52,66 @@ book_store = [
 
 
 
-#함수 정의부
+#===== 함수 정의부 =====#
+####user 리스트
+# 세이브 파일 생성 함수
+def save_user_list():
+    if not os.path.isdir(dir_name):
+        os.mkdir(dir_name)
+
+    try:
+        # b모드는 딕셔너리나 리스트같은 객체를 통째로 넣을 때 사용하는 모드
+        f = open(dir_name+file_name1, 'wb')
+        pickle.dump(user_list, f) #리스트를 통째로 세이브파일에 저장
+    except:
+        print('파일 저장 실패')
+    finally:
+        f.close()
+
+# 파일 로드 기능 함수
+def load_user_list():
+    global user_list    
+
+    if not os.path.isdir(dir_name): return
+    if not os.path.isfile(dir_name+file_name1): return
+
+    try:
+        f = open(dir_name+file_name1, 'rb')
+        user_list = pickle.load(f)
+    except:
+        print('파일 로드 실패')
+    finally:
+        f.close()
+
+####book 리스트
+# 세이브 파일 생성 함수
+def save_book_store():
+    if not os.path.isdir(dir_name):
+        os.mkdir(dir_name)
+
+    try:
+        # b모드는 딕셔너리나 리스트같은 객체를 통째로 넣을 때 사용하는 모드
+        f = open(dir_name+file_name2, 'wb')
+        pickle.dump(book_store, f) #리스트를 통째로 세이브파일에 저장
+    except:
+        print('파일 저장 실패')
+    finally:
+        f.close()
+
+# 파일 로드 기능 함수
+def load_book_store():
+    global book_store    
+
+    if not os.path.isdir(dir_name): return
+
+    try:
+        f = open(dir_name+file_name2, 'rb')
+        book_store = pickle.load(f)
+    except:
+        print('파일 로드 실패')
+    finally:
+        f.close()
+
 
 #첫 회원가입/로그인 화면 보여주기
 def show_first():
@@ -82,6 +152,8 @@ def insert_id_pw():
     user_list.append(user)
     
     print('\n>> 회원가입이 완료되었습니다. <<')
+    save_user_list()
+    
 
 # 기존 직원 로그인
 # 아이디를 입력받는
@@ -176,6 +248,8 @@ def ipt_book():
 
     book_store.append(book)
     print('\n>> 신규 도서가 등록되었습니다. <<')
+    save_book_store()
+    
 
 # 도서정보 출력 머리말
 def books_header():
@@ -246,6 +320,8 @@ def modify_book():
         book['총액'] = book['가격'] * book['수량']
     else:
         print('\n!! 존재하지 않는 도서입니다. !!')
+    save_book_store()
+    
 
 # 도서정보 삭제 처리 함수
 def delete_book():
@@ -257,6 +333,8 @@ def delete_book():
         print('\n>> 도서가 정상 삭제되었습니다. <<')
     else:
         print('\n!! 존재하지 않는 도서입니다. !!')
+    save_book_store()
+    
         
 
 ##################################################################################
@@ -275,7 +353,8 @@ def exit_program():
 
 #실행부
 if __name__ == '__main__':
-    
+    load_user_list()
+
     while True:
         show_first()
         
@@ -289,6 +368,7 @@ if __name__ == '__main__':
 
 
             if is_login:
+                load_book_store()
                 # is_login이 True => 도서 등록 메뉴로 전환
                 while True:
                     show_second()
